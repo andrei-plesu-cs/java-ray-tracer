@@ -6,15 +6,15 @@ import org.andreip.objects.*;
 public final class TraceConfiguration {
     private final int imageWidth;
     private final int imageHeight;
-    private final double aspectRatio;
+    private final float aspectRatio;
     private final int samplesPerPixel;
     private final int maxDepth;
-    private final double vFov;
+    private final float vFov;
     private final Vec3 lookFrom;
     private final Vec3 lookAt;
     private final Vec3 vUp;
-    private final double defocusAngle;
-    private final double focusDist;
+    private final float defocusAngle;
+    private final float focusDist;
     private final World world;
 
     private TraceConfiguration(Builder builder) {
@@ -36,7 +36,7 @@ public final class TraceConfiguration {
         return imageWidth;
     }
 
-    public double getAspectRatio() {
+    public float getAspectRatio() {
         return aspectRatio;
     }
 
@@ -48,7 +48,7 @@ public final class TraceConfiguration {
         return maxDepth;
     }
 
-    public double getVFov() {
+    public float getVFov() {
         return vFov;
     }
 
@@ -68,11 +68,11 @@ public final class TraceConfiguration {
         return vUp;
     }
 
-    public double getDefocusAngle() {
+    public float getDefocusAngle() {
         return defocusAngle;
     }
 
-    public double getFocusDist() {
+    public float getFocusDist() {
         return focusDist;
     }
 
@@ -83,22 +83,22 @@ public final class TraceConfiguration {
     public static class Builder {
         private int imageWidth = 400;
         private int imageHeight;
-        private double aspectRatio = 16.0 / 9.0;
+        private float aspectRatio = 16.0f / 9.0f;
         private int samplesPerPixel = 10;
         private int maxDepth = 10;
-        private double vFov = 90.0;
+        private float vFov = 90.0f;
         private Vec3 lookFrom = new Vec3(0, 0, 0);
         private Vec3 lookAt = new Vec3(0, 0, -1);
         private Vec3 vUp = new Vec3(0, 1, 0);
-        private double defocusAngle = 0;
-        private double focusDist = 10;
+        private float defocusAngle = 0;
+        private float focusDist = 10;
         private World world;
 
         public Builder imageWidth(int imageWidth) {
             this.imageWidth = imageWidth; return this;
         }
 
-        public Builder aspectRatio(double aspectRatio) {
+        public Builder aspectRatio(float aspectRatio) {
             this.aspectRatio = aspectRatio; return this;
         }
 
@@ -130,11 +130,11 @@ public final class TraceConfiguration {
             this.vUp = vUp; return this;
         }
 
-        public Builder defocusAngle(double defocusAngle) {
+        public Builder defocusAngle(float defocusAngle) {
             this.defocusAngle = defocusAngle; return this;
         }
 
-        public Builder focusDist(double focusDist) {
+        public Builder focusDist(float focusDist) {
             this.focusDist = focusDist; return this;
         }
 

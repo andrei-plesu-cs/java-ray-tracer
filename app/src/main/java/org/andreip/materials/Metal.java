@@ -4,9 +4,9 @@ import org.andreip.utils.*;
 import org.andreip.objects.*;
 
 public final class Metal extends AlbedoMaterial {
-    private final double fuzz;
+    private final float fuzz;
 
-    public Metal(Vec3 albedo, double fuzz) {
+    public Metal(Vec3 albedo, float fuzz) {
         super(albedo);
         this.fuzz = fuzz;
     }

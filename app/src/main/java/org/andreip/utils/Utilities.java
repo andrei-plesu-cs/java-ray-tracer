@@ -5,11 +5,11 @@ public final class Utilities {
         throw new AssertionError();
     }
 
-    public static double degreesToRadians(double degrees) {
-        return degrees * Math.PI / 180.0;
+    public static float degreesToRadians(float degrees) {
+        return degrees * (float) Math.PI / 180;
     }
 
-    public static double randomInRange(double min, double max) {
-        return (Math.random() * (max - min)) + min;
+    public static float randomInRange(float min, float max) {
+        return ((float) Math.random() * (max - min)) + min;
     }
 }

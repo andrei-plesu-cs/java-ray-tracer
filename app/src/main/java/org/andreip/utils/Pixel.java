@@ -1,7 +1,7 @@
 package org.andreip.utils;
 
 public class Pixel extends Vec3 {
-    public Pixel(double e0, double e1, double e2) {
+    public Pixel(float e0, float e1, float e2) {
         super(e0, e1, e2);
     }
 
@@ -16,7 +16,7 @@ public class Pixel extends Vec3 {
         b = linearToGamma(b);
 
         // Translate the [0,1] component values to the byte range [0,255].
-        var intensity = new Interval(0.000, 0.999);
+        var intensity = new Interval(0.000f, 0.999f);
         int rbyte = (int) (256 * intensity.clamp(r));
         int gbyte = (int) (256 * intensity.clamp(g));
         int bbyte = (int) (256 * intensity.clamp(b));
@@ -24,9 +24,9 @@ public class Pixel extends Vec3 {
         return rbyte + " " + gbyte + " " + bbyte;
     }
 
-    private double linearToGamma(double linearComponent) {
+    private float linearToGamma(float linearComponent) {
         if (linearComponent > 0)
-            return Math.sqrt(linearComponent);
+            return (float) Math.sqrt(linearComponent);
 
         return 0;
     }

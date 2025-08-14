@@ -8,15 +8,15 @@ import org.andreip.engines.config.*;
 import static org.andreip.utils.Utilities.*;
 
 public abstract class Engine {
-    protected final double viewportHeight;
-    protected final double viewportWidth;
+    protected final float viewportHeight;
+    protected final float viewportWidth;
     protected final Vec3 viewportU;
     protected final Vec3 viewportV;
     protected final Vec3 pixelDeltaU;
     protected final Vec3 pixelDeltaV;
     protected final Vec3 viewportUpperLeft;
     protected final Vec3 pixel00Loc;
-    protected final double pixelSamplesScale;
+    protected final float pixelSamplesScale;
     protected final Vec3 u, v, w;
     protected final Vec3 center;
     protected final Vec3 defocusDiskU;
@@ -35,15 +35,15 @@ public abstract class Engine {
         progressIndicator.setDaemon(true); // Mark as daemon so the thread quits when rendering is done
 
         // Compute image height
-        pixelSamplesScale = 1.0 / traceConfig.getSamplesPerPixel();
+        pixelSamplesScale = 1.0f / traceConfig.getSamplesPerPixel();
 
         center = traceConfig.getLookFrom();
 
         // Determine viewport dimensions.
         var theta = degreesToRadians(traceConfig.getVFov());
-        var h = Math.tan(theta / 2);
+        var h = (float) Math.tan(theta / 2);
         viewportHeight = 2 * h * traceConfig.getFocusDist();
-        viewportWidth = viewportHeight * ( (double) traceConfig.getImageWidth() / traceConfig.getImageHeight() );
+        viewportWidth = viewportHeight * ( (float) traceConfig.getImageWidth() / traceConfig.getImageHeight() );
 
         // Calculate the u,v,w unit basis vectors for the camera coordinate frame.
         w = traceConfig.getLookFrom().subtract(traceConfig.getLookAt()).toUnit();
@@ -55,21 +55,21 @@ public abstract class Engine {
         viewportV = v.scale(-viewportHeight);
 
         // Calculate the horizontal and vertical delta vectors from pixel to pixel.
-        pixelDeltaU = viewportU.scale(1.0 / traceConfig.getImageWidth());
-        pixelDeltaV = viewportV.scale(1.0 / traceConfig.getImageHeight());
+        pixelDeltaU = viewportU.scale(1.0f / traceConfig.getImageWidth());
+        pixelDeltaV = viewportV.scale(1.0f / traceConfig.getImageHeight());
 
         // Calculate the location of the upper left pixel.
         viewportUpperLeft = center
             .subtract(w.scale(traceConfig.getFocusDist()))
-            .subtract(viewportU.scale(1.0 / 2.0))
-            .subtract(viewportV.scale(1.0 / 2.0));
+            .subtract(viewportU.scale(0.5f))
+            .subtract(viewportV.scale(0.5f));
         
         pixel00Loc = viewportUpperLeft.add(pixelDeltaU
             .add(pixelDeltaV)
-            .scale(0.5));
+            .scale(0.5f));
 
         // Calculate the camera defocus disk basis vectors.
-        var defocusRadius = traceConfig.getFocusDist() * Math.tan(degreesToRadians(traceConfig.getDefocusAngle() / 2));
+        var defocusRadius = traceConfig.getFocusDist() * (float) Math.tan(degreesToRadians(traceConfig.getDefocusAngle() / 2));
         defocusDiskU = u.scale(defocusRadius);
         defocusDiskV = v.scale(defocusRadius);
     }
@@ -83,7 +83,7 @@ public abstract class Engine {
         }
 
         HitRecord rec = new HitRecord();
-        if (world.hit(r, new Interval(0.001, Double.MAX_VALUE), rec)) {
+        if (world.hit(r, new Interval(0.001f, Float.MAX_VALUE), rec)) {
             Ray scattered = new Ray(new Vec3(0, 0, 0), new Vec3(0, 0, 0));
             Vec3 attenuation = new Vec3(0, 0, 0);
 
@@ -96,11 +96,11 @@ public abstract class Engine {
         }
 
         Vec3 unitDirection = r.direction().toUnit();
-        var a = 0.5 * (unitDirection.y() + 1.0);
+        float a = 0.5f * (unitDirection.y() + 1.0f);
 
         return new Vec3(1, 1, 1)
-            .scale(1.0 - a)
-            .add(new Vec3(0.5, 0.7, 1.0)
+            .scale(1 - a)
+            .add(new Vec3(0.5f, 0.7f, 1.0f)
                 .scale(a));
     }
 
@@ -115,14 +115,14 @@ public abstract class Engine {
 
         var rayOrigin = (traceConfig.getDefocusAngle() <= 0) ? center : defocusDiskSample();
         var rayDirection = pixelSample.subtract(rayOrigin);
-        var rayTime = Math.random();
+        var rayTime = (float) Math.random();
 
         return new Ray(rayOrigin, rayDirection, rayTime);
     }
 
     protected Vec3 sampleSquare() {
         // Returns the vector to a random point in the [-.5,-.5]-[+.5,+.5] unit square.
-        return new Vec3(Math.random() - 0.5, Math.random() - 0.5, 0);
+        return new Vec3((float) Math.random() - 0.5f, (float) Math.random() - 0.5f, 0);
     }
 
     protected Vec3 defocusDiskSample() {

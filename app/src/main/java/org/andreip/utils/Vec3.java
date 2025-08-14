@@ -3,27 +3,27 @@ package org.andreip.utils;
 import static org.andreip.utils.Utilities.*;
 
 public class Vec3 {
-    private final double[] e;
+    private final float[] e;
 
     public Vec3() {
-        this(0.0, 0.0, 0.0);
+        this(0, 0, 0);
     }
 
-    public Vec3(double e0, double e1, double e2) {
-        e = new double[] { e0, e1, e2 };
+    public Vec3(float e0, float e1, float e2) {
+        e = new float[] { e0, e1, e2 };
     }
 
-    public final double x() { return e[0]; }
+    public final float x() { return e[0]; }
 
-    public final double y() { return e[1]; }
+    public final float y() { return e[1]; }
 
-    public final double z() { return e[2]; }
+    public final float z() { return e[2]; }
 
     public static final Vec3 random() {
-        return new Vec3(Math.random(), Math.random(), Math.random());
+        return new Vec3((float) Math.random(), (float) Math.random(), (float) Math.random());
     }
 
-    public static final Vec3 random(double min, double max) {
+    public static final Vec3 random(float min, float max) {
         return new Vec3(randomInRange(min, max), randomInRange(min, max), randomInRange(min, max));
     }
 
@@ -32,14 +32,14 @@ public class Vec3 {
             var p = random(-1, 1);
             var lensq = p.lengthSquared();
             if (1e-160 < lensq && lensq <= 1) {
-                return p.scale(1.0 / Math.sqrt(lensq));
+                return p.scale(1 / (float) Math.sqrt(lensq));
             }
         }
     }
 
     public static final Vec3 randomOnHemisphere(Vec3 normal) {
         Vec3 onUnitSphere = randomUnitVector();
-        if (onUnitSphere.dot(normal) > 0.0) { // In the same hemisphere as the normal
+        if (onUnitSphere.dot(normal) > 0) { // In the same hemisphere as the normal
             return onUnitSphere;
         } else {
             return onUnitSphere.scale(-1);
@@ -48,8 +48,8 @@ public class Vec3 {
 
     public static final Vec3 randomInUnitDisc() {
         while (true) {
-            var p = new Vec3(randomInRange(-1, 1), randomInRange(-1, 1), 0.0);
-            if (p.lengthSquared() < 1.0) {
+            var p = new Vec3(randomInRange(-1, 1), randomInRange(-1, 1), 0);
+            if (p.lengthSquared() < 1) {
                 return p;
             }
         }
@@ -59,7 +59,7 @@ public class Vec3 {
         return new Vec3(x() + v.x(), y() + v.y(), z() + v.z());
     }
 
-    public final Vec3 add(double t) {
+    public final Vec3 add(float t) {
         return new Vec3(x() + t, y() + t, z() + t);
     }
 
@@ -67,7 +67,7 @@ public class Vec3 {
         return new Vec3(x() - v.x(), y() - v.y(), z() - v.z());
     }
 
-    public final Vec3 subtract(double t) {
+    public final Vec3 subtract(float t) {
         return add(-t);
     }
 
@@ -75,19 +75,19 @@ public class Vec3 {
         return new Vec3(x() * v.x(), y() * v.y(), z() * v.z());
     }
 
-    public final Vec3 scale(double t) {
+    public final Vec3 scale(float t) {
         return new Vec3(x() * t, y() * t, z() * t);
     }
 
-    public final double length() {
-        return Math.sqrt(lengthSquared());
+    public final float length() {
+        return (float) Math.sqrt(lengthSquared());
     }
 
-    public final double lengthSquared() {
+    public final float lengthSquared() {
         return dot(this);
     }
 
-    public final double dot(Vec3 v) {
+    public final float dot(Vec3 v) {
         return x() * v.x()
             + y() * v.y()
             + z() * v.z();
@@ -100,11 +100,11 @@ public class Vec3 {
     }
 
     public final Vec3 toUnit() {
-        return scale(1.0 / length());
+        return scale(1 / length());
     }
 
     public final Vec3 negate() {
-        return scale(-1.0);
+        return scale(-1);
     }
 
     public final Pixel toPixel() {
@@ -121,11 +121,11 @@ public class Vec3 {
         return subtract(n.scale(2 * dot(n)));
     }
 
-    public final Vec3 refract(Vec3 n, double etaiOverEtat) {
-        var cosTheta = Math.min(negate().dot(n), 1.0);
+    public final Vec3 refract(Vec3 n, float etaiOverEtat) {
+        var cosTheta = Math.min(negate().dot(n), 1.0f);
         Vec3 rOutPerp = add(n.scale(cosTheta))
             .scale(etaiOverEtat);
-        Vec3 rOutParallel = n.scale(-Math.sqrt(Math.abs(1.0 - rOutPerp.lengthSquared())));
+        Vec3 rOutParallel = n.scale((float) -Math.sqrt(Math.abs(1 - rOutPerp.lengthSquared())));
         return rOutPerp.add(rOutParallel);
     }
 

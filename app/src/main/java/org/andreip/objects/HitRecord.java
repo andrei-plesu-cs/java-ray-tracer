@@ -6,15 +6,15 @@ import org.andreip.materials.*;
 public class HitRecord {
     private Vec3 p;
     private Vec3 normal;
-    private double t;
+    private float t;
     private boolean frontFace;
     private Material mat;
 
     public HitRecord() {
-        this(new Vec3(0, 0, 0), new Vec3(0, 0, 0), 0.0, null);
+        this(new Vec3(0, 0, 0), new Vec3(0, 0, 0), 0, null);
     }
 
-    public HitRecord(Vec3 p, Vec3 normal, double t, Material mat) {
+    public HitRecord(Vec3 p, Vec3 normal, float t, Material mat) {
         this.p = p;
         this.normal = normal;
         this.t = t;
@@ -29,7 +29,7 @@ public class HitRecord {
         return normal; 
     }
 
-    public double getT() { 
+    public float getT() { 
         return t; 
     }
 
@@ -49,7 +49,7 @@ public class HitRecord {
         this.normal = normal;
     }
 
-    public void setT(double t) {
+    public void setT(float t) {
         this.t = t;
     }
 

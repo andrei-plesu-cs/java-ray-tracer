@@ -3,19 +3,19 @@ package org.andreip.utils;
 public class Ray {
     private Vec3 origin;
     private Vec3 direction;
-    private double time;
+    private float time;
 
     public Ray(Vec3 origin, Vec3 direction) {
-        this(origin, direction, 0.0);
+        this(origin, direction, 0);
     }
 
-    public Ray(Vec3 origin, Vec3 direction, double time) {
+    public Ray(Vec3 origin, Vec3 direction, float time) {
         this.origin = origin;
         this.direction = direction;
         this.time = time;
     }
 
-    public Vec3 at(double t) {
+    public Vec3 at(float t) {
         return origin.add(direction.scale(t));
     }
 
@@ -27,7 +27,7 @@ public class Ray {
         return direction;
     }
 
-    public double time() {
+    public float time() {
         return time;
     }
 

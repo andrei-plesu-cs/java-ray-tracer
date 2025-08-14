@@ -5,18 +5,18 @@ import org.andreip.materials.*;
 
 public class Sphere implements Hittable {
     private final Ray center;
-    private final double radius;
+    private final float radius;
     private final Material mat;
 
-    public Sphere(Vec3 staticCenter, double radius, Material mat) {
+    public Sphere(Vec3 staticCenter, float radius, Material mat) {
         this(new Ray(staticCenter, new Vec3(0, 0, 0)), radius, mat);
     }
 
-    public Sphere(Vec3 center1, Vec3 center2, double radius, Material mat) {
+    public Sphere(Vec3 center1, Vec3 center2, float radius, Material mat) {
         this(new Ray(center1, center2.subtract(center1)), radius, mat);
     }
 
-    private Sphere(Ray center, double radius, Material mat) {
+    private Sphere(Ray center, float radius, Material mat) {
         this.center = center;
         this.radius = radius;
         this.mat = mat;
@@ -35,7 +35,7 @@ public class Sphere implements Hittable {
             return false;
         }
 
-        var sqrtd = Math.sqrt(discriminant);
+        var sqrtd = (float) Math.sqrt(discriminant);
 
         // Find the nearest root that lies in the acceptable range.
         var root = (h - sqrtd) / a;
@@ -47,7 +47,7 @@ public class Sphere implements Hittable {
 
         rec.setT(root);
         rec.setP(r.at(rec.getT()));
-        Vec3 outwardNormal = rec.getP().subtract(currentCenter).scale(1.0 / radius);
+        Vec3 outwardNormal = rec.getP().subtract(currentCenter).scale(1 / radius);
         rec.setFaceNormal(r, outwardNormal);
         rec.setMat(mat);
 

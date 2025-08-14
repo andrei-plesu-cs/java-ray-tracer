@@ -17,7 +17,7 @@ public final class Lambertian extends AlbedoMaterial {
             scatterDirection = rec.getNormal();
         }
 
-        scattered.set(new Ray(rec.getP(), scatterDirection));
+        scattered.set(new Ray(rec.getP(), scatterDirection, rIn.time()));
         attenuation.set(albedo);
 
         return true;

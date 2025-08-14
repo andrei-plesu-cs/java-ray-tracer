@@ -9,7 +9,7 @@ import org.andreip.engines.config.*;
 public class SceneFactory {
     private static final TraceConfiguration.Builder DEFAULT_CONFIG = new TraceConfiguration.Builder()
         .aspectRatio(16.0 / 9.0)
-        .imageWidth(800)
+        .imageWidth(600)
         .samplesPerPixel(50)
         .maxDepth(20)
         .vFov(20)
@@ -46,17 +46,19 @@ public class SceneFactory {
                         // diffuse
                         var albedo = Vec3.random().multiply(Vec3.random());
                         sphereMaterial = new Lambertian(albedo);
+                        var center2 = center.add(new Vec3(0, Utilities.randomInRange(0, 0.5), 0));
+                        world.add(new Sphere(center, center2, 0.2, sphereMaterial));
                     } else if (chooseMat < 0.95) {
                         // metal
                         var albedo = Vec3.random(0.5, 1.0);
                         var fuzz = Utilities.randomInRange(0.0, 0.5);
                         sphereMaterial = new Metal(albedo, fuzz);
+                        world.add(new Sphere(center, 0.2, sphereMaterial));
                     } else {
                         // glass
                         sphereMaterial = new Dielectric(1.5);
+                        world.add(new Sphere(center, 0.2, sphereMaterial));
                     }
-
-                    world.add(new Sphere(center, 0.2, sphereMaterial));
                 }
             }
         }

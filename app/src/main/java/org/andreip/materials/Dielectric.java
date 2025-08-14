@@ -30,7 +30,7 @@ public class Dielectric implements Material {
             direction = unitDirection.refract(rec.getNormal(), ri);
         }
 
-        scattered.set(new Ray(rec.getP(), direction));
+        scattered.set(new Ray(rec.getP(), direction, rIn.time()));
         return true;
     }
 

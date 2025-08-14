@@ -115,8 +115,9 @@ public abstract class Engine {
 
         var rayOrigin = (traceConfig.getDefocusAngle() <= 0) ? center : defocusDiskSample();
         var rayDirection = pixelSample.subtract(rayOrigin);
+        var rayTime = Math.random();
 
-        return new Ray(rayOrigin, rayDirection);
+        return new Ray(rayOrigin, rayDirection, rayTime);
     }
 
     protected Vec3 sampleSquare() {
